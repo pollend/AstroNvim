@@ -174,6 +174,22 @@ function M.toggle_term_cmd(opts)
   terms[opts.cmd][num]:toggle()
 end
 
+function M.toggle_term_key(id)
+  local terms = astronvim.user_terminals
+  -- if a command string is provided, create a basic table for Terminal:new() options
+  local opts = { hidden = true }
+  local num = vim.v.count > 0 and vim.v.count or 1
+  -- if terminal doesn't exist yet, create it
+  if not terms[id] then terms[id] = {} end
+  if not terms[id][num] then
+    if not opts.count then opts.count = vim.tbl_count(terms) * 100 + num end
+    if not opts.on_exit then opts.on_exit = function() terms[id][num] = nil end end
+    terms[id][num] = require("toggleterm.terminal").Terminal:new(opts)
+  end
+  -- toggle the terminal
+  terms[id][num]:toggle(10, "horizontal")
+end
+
 --- Create a button entity to use with the alpha dashboard
 ---@param sc string The keybinding string to convert to a button
 ---@param txt string The explanation text of what the keybinding does
@@ -288,7 +304,7 @@ end
 
 --- regex used for matching a valid URL/URI string
 M.url_matcher =
-  "\\v\\c%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)%([&:#*@~%_\\-=?!+;/0-9a-z]+%(%([.;/?]|[.][.]+)[&:#*@~%_\\-=?!+/0-9a-z]+|:\\d+|,%(%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)@![0-9a-z]+))*|\\([&:#*@~%_\\-=?!+;/.0-9a-z]*\\)|\\[[&:#*@~%_\\-=?!+;/.0-9a-z]*\\]|\\{%([&:#*@~%_\\-=?!+;/.0-9a-z]*|\\{[&:#*@~%_\\-=?!+;/.0-9a-z]*})\\})+"
+"\\v\\c%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)%([&:#*@~%_\\-=?!+;/0-9a-z]+%(%([.;/?]|[.][.]+)[&:#*@~%_\\-=?!+/0-9a-z]+|:\\d+|,%(%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)@![0-9a-z]+))*|\\([&:#*@~%_\\-=?!+;/.0-9a-z]*\\)|\\[[&:#*@~%_\\-=?!+;/.0-9a-z]*\\]|\\{%([&:#*@~%_\\-=?!+;/.0-9a-z]*|\\{[&:#*@~%_\\-=?!+;/.0-9a-z]*})\\})+"
 
 --- Delete the syntax matching rules for URLs/URIs if set
 function M.delete_url_match()
