@@ -117,6 +117,15 @@ return {
       return commentstring_avail and commentstring and { pre_hook = commentstring.create_pre_hook() } or {}
     end,
   },
+ -- {
+ --   "github/copilot.lua",
+ --   event = { "InsertEnter" },
+ --   config = function(_, opts)
+ --       require("copilot").setup({})-- require('copilot').setup(opts);
+ --      -- vim.g.copilot_no_tab_map = true
+ --      -- vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+ --   end
+ -- },
   {
     "akinsho/toggleterm.nvim",
     cmd = { "ToggleTerm", "TermExec" },
@@ -135,4 +144,5 @@ return {
       },
     },
   },
+
 }

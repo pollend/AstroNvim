@@ -22,6 +22,9 @@ return {
       },
       default_component_configs = {
         indent = { padding = 0 },
+        container = {
+          enable_character_fade = false
+        },
         icon = {
           folder_closed = get_icon "FolderClosed",
           folder_open = get_icon "FolderOpen",
