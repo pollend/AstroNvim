@@ -61,7 +61,15 @@ return {
       },
     },
     event = "User AstroFile",
-    opts = function() return { on_attach = require("astronvim.utils.lsp").on_attach } end,
+    opts = function()
+      local null_ls = require("null-ls")
+      return { 
+        on_attach = require("astronvim.utils.lsp").on_attach,
+        source = {
+          null_ls.builtins.formatting.rustfmt
+        }
+      }
+    end,
   },
   {
     "stevearc/aerial.nvim",
